@@ -4,9 +4,11 @@ import helmet from "helmet"
 import cookieParser from 'cookie-parser'
 import { createServer } from 'http'
 import morgan from "morgan"
-import { APP_HOST, APP_PORT, CORS_ORIGIN, MONGO_CA_PATH, MONGO_CLIENT_CRT_PATH, MONGO_HOST, MONGO_PORT, MORGAN_ENV } from "./helpers/constants"
+import { API_VERSION, APP_HOST, APP_PORT, CORS_ORIGIN, MONGO_CA_PATH, MONGO_CLIENT_CRT_PATH, MONGO_HOST, MONGO_PORT, MORGAN_ENV } from "./helpers/constants"
 import mongoose, { MongooseError } from "mongoose"
 import { genConnectionOptions, genConnectionString } from "./helpers/tools"
+import userRouter from './api/user/user.router'
+import { errorHandler } from "./api/middlewares/errorMiddleware"
 
 const app = express()
 
@@ -21,13 +23,16 @@ app.use(cors({
 app.use(morgan(MORGAN_ENV))
 app.use(express.json())
 app.use(cookieParser())
+app.use(`/api/v${API_VERSION}/user`, userRouter)
+app.use(errorHandler)
+
+
 
 
 const startServices = async (): Promise<void> => {
   
   const mongoConnectionString = genConnectionString(MONGO_HOST, MONGO_PORT)
   const mongoConectionOptions = genConnectionOptions(MONGO_CA_PATH, MONGO_CLIENT_CRT_PATH)
-  mongoose.set('strictQuery', false)
 
   try {
     await mongoose.connect(mongoConnectionString, mongoConectionOptions)
@@ -43,7 +48,7 @@ const startServices = async (): Promise<void> => {
       }
     }
   } catch (error) {
-    if (error instanceof MongooseError) {
+    if (error instanceof Error) {
       console.error(error.message)
       return
     } else {

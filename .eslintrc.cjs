@@ -23,6 +23,7 @@ module.exports = {
         delimiter: 'semi',
         requireLast: false
       }
-    }]
+    }],
+    '@typescript-eslint/ban-types': 0
   }
 }

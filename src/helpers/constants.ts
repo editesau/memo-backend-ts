@@ -17,3 +17,5 @@ export const MONGO_CLIENT_CRT_PATH = process.env.MONGO_CLIENT_CRT_PATH || './mon
 export const CORS_ORIGIN = process.env.CORS_ORIGIN || 'localhost'
 
 export const MORGAN_ENV = process.env.MORGAN_ENV || 'dev'
+
+export const BCRYPT_SALT = Number(process.env.BCRYPT_SALT) || 10
