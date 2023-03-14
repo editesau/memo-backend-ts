@@ -33,5 +33,5 @@ node_modules/
 
 .DS_Store
 .idea
-build
+dist/
 package-lock.json
