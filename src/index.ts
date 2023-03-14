@@ -24,6 +24,7 @@ app.use(cookieParser())
 
 
 const startServices = async (): Promise<void> => {
+  
   const mongoConnectionString = genConnectionString(MONGO_HOST, MONGO_PORT)
   const mongoConectionOptions = genConnectionOptions(MONGO_CA_PATH, MONGO_CLIENT_CRT_PATH)
   mongoose.set('strictQuery', false)
