@@ -9,7 +9,7 @@ import mongoose, { MongooseError } from "mongoose"
 import { genConnectionOptions, genConnectionString } from "./helpers/tools"
 import userRouter from './api/user/user.router'
 import { errorHandler } from "./api/middlewares/errorMiddleware"
-//3
+//
 const app = express()
 
 const httpServer = createServer(app)
