@@ -19,17 +19,19 @@ const Game = z.object({
   openedCards: z.array(openedCardsItem)
 })
 
-type Game = z.infer<typeof Game>
-type Card = z.infer<typeof Card>
+const GameStartRequestBody = z.object({
+  level: z.string().min(2),
+  gameType: z.string().nonempty()
+})
 
-export interface GameResetRequestParams {
+type Game = z.infer<typeof Game>
+export type Card = z.infer<typeof Card>
+
+export interface GameIdBody {
   gameId: string
 }
 
-export interface GameStartRequestBody {
-  level: string
-  gameType: string
-}
+export type GameStartRequestBody = z.infer<typeof GameStartRequestBody>
 
 type GameModel = mongoose.Model<Game, Empty, Empty>
 
