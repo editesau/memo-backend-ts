@@ -6,14 +6,14 @@ import { ZodError } from "zod"
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const errorHandler: ErrorRequestHandler = (error, _req, res, _next) => {
-  if (createHttpError.isHttpError(error)) {
-    return res.status(error.statusCode).json({message: error.message})
-  }
   if (error instanceof ZodError) {
     return res.status(400).json({message: error.issues.map((err) => `${err.path}: ${err.message}`).join(', ')})
   }
   if (error instanceof TokenExpiredError) {
     return res.status(401).json({message: 'Access token expired'})
+  }
+  if (createHttpError.isHttpError(error)) {
+    return res.status(error.statusCode).json({message: error.message})
   }
   if (error instanceof Error) {
     switch (error.name) {

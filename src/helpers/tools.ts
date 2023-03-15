@@ -1,5 +1,5 @@
-import { MONGO_CA_PATH, MONGO_CLIENT_CRT_PATH } from "./constants"
-
+import { IMAGES_PATH, MONGO_CA_PATH, MONGO_CLIENT_CRT_PATH } from "./constants"
+import * as fs from 'fs'
 
 /** Function to generate mongoDB connection URL
  *@param host {string} IP address or DNS hostname
@@ -25,3 +25,5 @@ export const genConnectionOptions = (caCertPath: string, clientCertPath: string)
   tlsCertificateKeyFile: clientCertPath,
   authMechanism: 'MONGODB-X509',
 })
+
+export const getImagesFiles = (gameType: string): string[] => fs.readdirSync(IMAGES_PATH + gameType)

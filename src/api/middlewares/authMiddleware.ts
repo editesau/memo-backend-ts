@@ -1,8 +1,8 @@
 import { RequestHandler } from "express"
 import createHttpError from "http-errors"
-import { Empty } from "../../helpers/types"
-import { checkToken } from "../../services/jwt.service"
-import { UserIdLocals } from "../user/user.model"
+import { Empty } from "@helpers/types"
+import { checkToken } from "@services/jwt.service"
+import { UserIdLocals } from "@user/user.model"
 
 export const checkAccessToken: RequestHandler<Empty, Empty, Empty, Empty, UserIdLocals> = async (req, res, next) => {
   if (!req.headers.authorization) {
@@ -15,7 +15,7 @@ export const checkAccessToken: RequestHandler<Empty, Empty, Empty, Empty, UserId
       const { userId } = checkToken(accessToken)
       res.locals.userId = userId
     } catch (error) {
-      next(error)
+      return next(error)
     }
   } else {
     const error = createHttpError(401, 'Unathorized')

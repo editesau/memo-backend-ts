@@ -1,14 +1,12 @@
 import { Router } from "express"
 import * as userController from './user.controller'
-import * as validationMiddleware from '../middlewares/vaidationMiddleware'
-import * as authMiddleware from '../middlewares/authMiddleware'
-const router = Router()
+import * as validationMiddleware from '@middlewares/vaidationMiddleware'
+import * as authMiddleware from '@middlewares/authMiddleware'
+export const userRouter = Router()
 
-router.post('/signup', validationMiddleware.userCreate, userController.create)
-router.post('/signin', validationMiddleware.userLogin, userController.login)
-router.get('/logout', authMiddleware.checkAccessToken, userController.logout)
-router.get('/refresh', authMiddleware.checkRefreshToken, userController.refresh)
-router.get('/', authMiddleware.checkAccessToken, userController.getSelf)
-router.get('/:id', authMiddleware.checkAccessToken, userController.get)
-
-export default router
+userRouter.post('/signup', validationMiddleware.userCreate, userController.create)
+userRouter.post('/signin', validationMiddleware.userLogin, userController.login)
+userRouter.get('/logout', authMiddleware.checkAccessToken, userController.logout)
+userRouter.get('/refresh', authMiddleware.checkRefreshToken, userController.refresh)
+userRouter.get('/', authMiddleware.checkAccessToken, userController.getSelf)
+userRouter.get('/:id', authMiddleware.checkAccessToken, userController.get)
