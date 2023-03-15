@@ -15,7 +15,7 @@ export const checkAccessToken: RequestHandler<Empty, Empty, Empty, Empty, UserId
       const { userId } = checkToken(accessToken)
       res.locals.userId = userId
     } catch (error) {
-      next(error)
+      return next(error)
     }
   } else {
     const error = createHttpError(401, 'Unathorized')

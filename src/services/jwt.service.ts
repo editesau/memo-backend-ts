@@ -26,9 +26,9 @@ function verifyPayload(data: unknown): asserts data is UserJwtPayload {
 }
 
 export const checkToken = (jwtToken: string) => {
-  const payload = jwt.verify(jwtToken, JWT_SECRET)
-  verifyPayload(payload)
-  return payload
+    const payload = jwt.verify(jwtToken, JWT_SECRET)
+    verifyPayload(payload)
+    return payload  
 }
 
 

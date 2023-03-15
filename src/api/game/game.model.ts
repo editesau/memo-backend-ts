@@ -1,4 +1,3 @@
-import { Empty } from '@helpers/types'
 import mongoose from 'mongoose'
 import { z } from 'zod'
 
@@ -16,10 +15,11 @@ const Game = z.object({
   cards: z.array(Card),
   type: z.string(),
   userId: z.string(),
-  openedCards: z.array(openedCardsItem)
+  openedCards: z.array(openedCardsItem),
+  level: z.number()
 })
 
-const GameStartRequestBody = z.object({
+export const GameStartRequestBody = z.object({
   level: z.string().min(2),
   gameType: z.string().nonempty()
 })
@@ -33,7 +33,7 @@ export interface GameIdBody {
 
 export type GameStartRequestBody = z.infer<typeof GameStartRequestBody>
 
-type GameModel = mongoose.Model<Game, Empty, Empty>
+type GameModel = mongoose.Model<Game>
 
 const gameSchema = new mongoose.Schema<Game>({
   state: { type: String, default: 'In progress' },
@@ -41,6 +41,7 @@ const gameSchema = new mongoose.Schema<Game>({
   openedCards: { type: [Object], default: [], required: true },
   cards: { type: [Object], required: true },
   userId: { type: String, required: true },
+  level: { type: Number, required: true}
 })
 
 export const gameModel = mongoose.model<Game, GameModel>('games_test', gameSchema)

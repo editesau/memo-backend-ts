@@ -8,16 +8,39 @@ import { GameIdBody, gameModel, GameStartRequestBody } from "./game.model"
 
 export const start: RequestHandler<Empty, GameIdBody, GameStartRequestBody, Empty, UserIdLocals> = async (req, res, next) => {
   const userId = res.locals.userId
-  const { gameType, level } = req.body
-  const cards = generateCards(parseInt(level), gameType)
-
+  const { gameType: type, level } = req.body
+  const cards = generateCards(parseInt(level), type)
   try {
-    const result = await gameModel.create({ cards, userId})
+    const result = await gameModel.create({ cards, userId, level, type})
     if (result) {
       const game = result.toJSON()
       return res.status(201).json({gameId: game._id.toString()})
     } else {
       const error = createHttpError(500, 'Error when try to create new game')
+      return next(error)
+    }
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const reset: RequestHandler<GameIdBody, Empty, Empty, Empty, UserIdLocals> = async (req, res, next) => {
+  const userId = res.locals.userId
+  const { gameId } = req.params
+  try {
+    const currentGame = await gameModel.findOne({userId, gameId})
+    if (currentGame) {
+      const { type, level} = currentGame.toJSON()
+      const newCards = generateCards(level, type)
+      currentGame.cards = newCards
+      try {
+        await currentGame.save()
+        return res.sendStatus(200)
+      } catch (error) {
+        return next(error)
+      }
+    } else {
+      const error = createHttpError(500, 'Error when try to reset game')
       return next(error)
     }
   } catch (error) {

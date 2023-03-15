@@ -6,9 +6,10 @@ import { createServer } from 'http'
 import morgan from "morgan"
 import { API_VERSION, APP_HOST, APP_PORT, CORS_ORIGIN, MONGO_CA_PATH, MONGO_CLIENT_CRT_PATH, MONGO_HOST, MONGO_PORT, MORGAN_ENV } from "./helpers/constants"
 import mongoose from "mongoose"
-import { genConnectionOptions, genConnectionString, getImagesFiles } from "@helpers/tools"
+import { genConnectionOptions, genConnectionString } from "@helpers/tools"
 import { userRouter } from '@user/user.router'
 import { errorHandler } from "@middlewares/errorMiddleware"
+import { gameRouter } from "@game/game.router"
 
 const app = express()
 
@@ -23,6 +24,7 @@ app.use(morgan(MORGAN_ENV))
 app.use(express.json())
 app.use(cookieParser())
 app.use(`/api/v${API_VERSION}/user`, userRouter)
+app.use(`/api/v${API_VERSION}/game`, gameRouter)
 app.use(errorHandler)
 
 
