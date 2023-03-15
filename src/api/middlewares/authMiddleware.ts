@@ -23,3 +23,19 @@ export const checkAccessToken: RequestHandler<Empty, Empty, Empty, Empty, UserId
   }
   return next()
 }
+
+export const checkRefreshToken: RequestHandler<Empty, Empty, Empty, Empty, UserIdLocals> = async (req, res, next) => {
+  const { refresh_token: refreshToken } = req.cookies
+  if (refreshToken) {
+    try {
+      const { userId } = checkToken(refreshToken)
+      res.locals.userId = userId
+    } catch (error) {
+      return next(error)
+      }
+  } else {
+    const error = createHttpError(401, 'Your session was expired, login again')
+    next(error)
+  }
+  return next()
+}

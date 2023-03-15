@@ -20,7 +20,7 @@ export const createRefreshToken = (payload: UserJwtPayload) => jwt.sign(
 
 function verifyPayload(data: unknown): asserts data is UserJwtPayload {
   if (!(data instanceof Object)) 
-    throw new Error('Token must be an object')
+    throw new Error('Payload must be an object')
   if (!('userId' in data)) 
     throw new Error('Missing required field "userId"')
 }

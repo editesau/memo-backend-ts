@@ -7,6 +7,8 @@ const router = Router()
 router.post('/signup', validationMiddleware.userCreate, userController.create)
 router.post('/signin', validationMiddleware.userLogin, userController.login)
 router.get('/logout', authMiddleware.checkAccessToken, userController.logout)
-router.get('/refresh', authMiddleware.checkAccessToken, userController.refresh)
+router.get('/refresh', authMiddleware.checkRefreshToken, userController.refresh)
+router.get('/', authMiddleware.checkAccessToken, userController.getSelf)
+router.get('/:id', authMiddleware.checkAccessToken, userController.get)
 
 export default router

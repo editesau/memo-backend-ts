@@ -1,16 +1,17 @@
 import { RequestHandler } from "express"
 import createHttpError from "http-errors"
+import mongoose from "mongoose"
 import { Empty } from "../../helpers/types"
 import { createAccessToken, createRefreshToken } from "../../services/jwt.service"
-import userModel, { User, UserLoginRequestBody, UserLoginResponseBody, UserIdLocals, UserViewModel } from "./user.model"
+import userModel, { User, UserLoginRequestBody, UserLoginResponseBody, UserIdLocals, UserViewModel, UserIdInParams } from "./user.model"
 
 export const create: RequestHandler<{}, UserViewModel, User> = async (req, res, next) => {
   const {email, password, userName, avatar} = req.body
   try {
     const result = await userModel.create({email, password, userName, avatar})
     if (result) {
-      const {_id, userName, email} = result.toJSON()
-      res.status(201).json({_id, userName, email})
+      const {_id, userName, email, avatar} = result.toJSON()
+      return res.status(201).json({_id, userName, email, avatar})
     }
   } catch(error) {
     next(error)
@@ -67,7 +68,7 @@ export const logout: RequestHandler<Empty, Empty, Empty, Empty, UserIdLocals> = 
   }
 }
 
-export const refresh: RequestHandler<Empty, UserLoginResponseBody, Empty, Empty, UserIdLocals> = async (req, res, next) => {
+export const refresh: RequestHandler<Empty, UserLoginResponseBody, Empty, Empty, UserIdLocals> = async (_req, res, next) => {
   const userId = res.locals.userId
   try {
     const user = await userModel.findById(userId)
@@ -91,5 +92,49 @@ export const refresh: RequestHandler<Empty, UserLoginResponseBody, Empty, Empty,
   } catch (_e) {
     const error = createHttpError(500, 'Error when try to get user info')
     return next(error)
+  }
+}
+
+export const getSelf: RequestHandler<Empty, UserViewModel, Empty, Empty, UserIdLocals> = async (_req, res, next) => {
+  const userId = res.locals.userId
+  if (!mongoose.isValidObjectId(userId)) {
+    const error = createHttpError(400, 'Invalid user ID')
+    return next(error)
+  } else {
+    try {
+      const userDoc = await userModel.findById(userId)
+      if (!userDoc) {
+        const error = createHttpError(404, 'User not found')
+        return next(error)
+      } else {
+        const {_id, userName, email, avatar} = userDoc.toJSON()
+        return res.json({_id, userName, email, avatar})
+      }
+    } catch (_e) {
+      const error = createHttpError(500, 'Erro when try to find user')
+      next(error)
+    }
+  }
+}
+
+export const get: RequestHandler<UserIdInParams, UserViewModel, Empty, Empty, Empty> = async (req, res, next) => {
+  const userId = req.params.id
+  if (!mongoose.isValidObjectId(userId)) {
+    const error = createHttpError(400, 'Invalid user ID')
+    return next(error)
+  } else {
+    try {
+      const userDoc = await userModel.findById(userId)
+      if (!userDoc) {
+        const error = createHttpError(404, 'User not found')
+        return next(error)
+      } else {
+        const {_id, userName, email, avatar} = userDoc.toJSON()
+        return res.json({_id, userName, email, avatar})
+      }
+    } catch (_e) {
+      const error = createHttpError(500, 'Erro when try to find user')
+      next(error)
+    }
   }
 }

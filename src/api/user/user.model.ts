@@ -26,6 +26,9 @@ export interface UserLoginResponseBody {
 export interface UserIdLocals {
     userId: string
 }
+export interface UserIdInParams {
+  id: string
+}
 export interface UserViewModel extends Omit<User, 'password' | 'refreshToken'> {
   _id: mongoose.Types.ObjectId
 } 
