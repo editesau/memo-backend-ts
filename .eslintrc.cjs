@@ -5,7 +5,7 @@ module.exports = {
   },
   extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
   parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint'],
+  plugins: ['@typescript-eslint', 'import'],
   overrides: [
   ],
   parserOptions: {
@@ -24,6 +24,7 @@ module.exports = {
         requireLast: false
       }
     }],
-    '@typescript-eslint/ban-types': 0
+    '@typescript-eslint/ban-types': 0,
+    'import/no-default-export': 1,
   }
 }

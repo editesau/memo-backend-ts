@@ -3,7 +3,7 @@ import createHttpError from "http-errors"
 import mongoose from "mongoose"
 import { Empty } from "@helpers/types"
 import { createAccessToken, createRefreshToken } from "@services/jwt.service"
-import userModel, { User, UserLoginRequestBody, UserLoginResponseBody, UserIdLocals, UserViewModel, UserIdInParams } from "./user.model"
+import { userModel, User, UserLoginRequestBody, UserLoginResponseBody, UserIdLocals, UserViewModel, UserIdInParams } from "./user.model"
 
 export const create: RequestHandler<{}, UserViewModel, User> = async (req, res, next) => {
   const {email, password, userName, avatar} = req.body

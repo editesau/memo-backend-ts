@@ -7,14 +7,13 @@ import morgan from "morgan"
 import { API_VERSION, APP_HOST, APP_PORT, CORS_ORIGIN, MONGO_CA_PATH, MONGO_CLIENT_CRT_PATH, MONGO_HOST, MONGO_PORT, MORGAN_ENV } from "./helpers/constants"
 import mongoose from "mongoose"
 import { genConnectionOptions, genConnectionString } from "@helpers/tools"
-import userRouter from '@user/user.router'
+import { userRouter } from '@user/user.router'
 import { errorHandler } from "@middlewares/errorMiddleware"
-//
+
 const app = express()
 
 const httpServer = createServer(app)
 
-// connect middlewares
 app.use(helmet())
 app.use(cors({
   origin: CORS_ORIGIN,

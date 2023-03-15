@@ -31,14 +31,14 @@ export interface UserIdInParams {
 }
 export interface UserViewModel extends Omit<User, 'password' | 'refreshToken'> {
   _id: mongoose.Types.ObjectId
-} 
+}
 export interface UserJwtPayload extends JwtPayload {
   userId: string
 }
-
 export interface UserMethods {
   comparePasswords(candidatePassword: string): boolean
 }
+
 type UserModel = mongoose.Model<User, Empty, UserMethods>
 
 const userSchema = new mongoose.Schema<User, UserModel, UserMethods>({
@@ -63,6 +63,4 @@ userSchema.methods.comparePasswords = function(candidatePassword: string): boole
   return isValid
 }
 
-const userModel = mongoose.model<User, UserModel>('users_test', userSchema)
-
-export default userModel
+export const userModel = mongoose.model<User, UserModel>('users_test', userSchema)
