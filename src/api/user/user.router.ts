@@ -1,7 +1,7 @@
 import { Router } from "express"
 import * as userController from './user.controller'
-import * as validationMiddleware from '../middlewares/vaidationMiddleware'
-import * as authMiddleware from '../middlewares/authMiddleware'
+import * as validationMiddleware from '@middlewares/vaidationMiddleware'
+import * as authMiddleware from '@middlewares/authMiddleware'
 const router = Router()
 
 router.post('/signup', validationMiddleware.userCreate, userController.create)

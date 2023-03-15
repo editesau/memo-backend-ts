@@ -4,8 +4,8 @@
   "description": "Backend for memo app",
   "main": "index.js",
   "scripts": {
-    "build": "rm -rf ./dist && npx tsc",
-    "dev": "rm -rf ./dist && npx tsc && node ./dist/src/index.js"
+    "build": "rm -rf ./dist && npx tsc && npx tsc-alias",
+    "dev": "rm -rf ./dist && npx tsc && npx tsc-alias && node ./dist/src/index.js"
   },
   "author": "Aleksei Morozov @editesau",
   "license": "ISC",
@@ -38,6 +38,7 @@
     "eslint-plugin-n": "^15.6.1",
     "eslint-plugin-promise": "^6.1.1",
     "ts-node": "^10.9.1",
+    "tsc-alias": "^1.8.3",
     "typescript": "^4.9.5"
   }
 }

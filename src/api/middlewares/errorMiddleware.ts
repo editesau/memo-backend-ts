@@ -4,8 +4,7 @@ import { TokenExpiredError } from "jsonwebtoken"
 import { ZodError } from "zod"
 
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const errorHandler: ErrorRequestHandler = (error, _req, res, _next) => {
+export const errorHandler: ErrorRequestHandler = (error, _req, res) => {
   if (createHttpError.isHttpError(error)) {
     return res.status(error.statusCode).json({message: error.message})
   }

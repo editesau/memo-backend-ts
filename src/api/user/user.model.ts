@@ -1,9 +1,9 @@
 import { z } from 'zod'
 import * as mongoose from 'mongoose'
 import * as bcrypt from 'bcrypt'
-import { BCRYPT_SALT } from '../../helpers/constants'
+import { BCRYPT_SALT } from '@helpers/constants'
 import { JwtPayload } from 'jsonwebtoken'
-import { Empty } from '../../helpers/types'
+import { Empty } from '@helpers/types'
 
 export const User = z.object({
   email: z.string().email(),

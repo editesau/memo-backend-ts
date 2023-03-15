@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
-import { JWT_ACCESS_LIFE, JWT_REFRESH_LIFE, JWT_SECRET } from '../helpers/constants.js'
-import { UserJwtPayload } from '../api/user/user.model'
+import { JWT_ACCESS_LIFE, JWT_REFRESH_LIFE, JWT_SECRET } from '@helpers/constants.js'
+import { UserJwtPayload } from '@user/user.model'
 
 export const createAccessToken = (payload: UserJwtPayload) => jwt.sign(
   payload,

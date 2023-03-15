@@ -1,6 +1,6 @@
 import { RequestHandler } from "express"
-import { Empty } from "../../helpers/types"
-import { User, UserLoginRequestBody, UserLoginResponseBody, UserViewModel } from "../user/user.model"
+import { Empty } from "@helpers/types"
+import { User, UserLoginRequestBody, UserLoginResponseBody, UserViewModel } from "@user/user.model"
 
 export const userCreate: RequestHandler<Empty, UserViewModel, User> = async (req, _res, next) => {
   try {
