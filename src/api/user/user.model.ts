@@ -2,6 +2,9 @@ import { z } from 'zod'
 import * as mongoose from 'mongoose'
 import * as bcrypt from 'bcrypt'
 import { BCRYPT_SALT } from '../../helpers/constants'
+import { JwtPayload } from 'jsonwebtoken'
+import { Empty } from '../../helpers/types'
+
 export const User = z.object({
   email: z.string().email(),
   password: z.string().min(6),
@@ -10,18 +13,31 @@ export const User = z.object({
   refreshToken: z.string().optional(),
 })
 
+export const UserLoginRequestBody = z.object({
+  email: z.string().email(),
+  password: z.string().min(6)
+})
+
 export type User = z.infer<typeof User>
-export interface UserMethods {
-  comparePasswords(candidatePassword: string): boolean
+export type UserLoginRequestBody = z.infer<typeof UserLoginRequestBody>
+export interface UserLoginResponseBody {
+  accessToken: string
 }
-type UserModel = mongoose.Model<User, {}, UserMethods>
-export interface UserLoginBody {
-  email: string
-  password: string
+export interface UserIdLocals {
+    userId: string
 }
 export interface UserViewModel extends Omit<User, 'password' | 'refreshToken'> {
   _id: mongoose.Types.ObjectId
 } 
+export interface UserJwtPayload extends JwtPayload {
+  userId: string
+}
+
+export interface UserMethods {
+  comparePasswords(candidatePassword: string): boolean
+}
+type UserModel = mongoose.Model<User, Empty, UserMethods>
+
 const userSchema = new mongoose.Schema<User, UserModel, UserMethods>({
   email: {type: String, require: true},
   password: {type: String, require: true},
@@ -44,6 +60,6 @@ userSchema.methods.comparePasswords = function(candidatePassword: string): boole
   return isValid
 }
 
-const userModel = mongoose.model<User, UserModel>('users', userSchema)
+const userModel = mongoose.model<User, UserModel>('users_test', userSchema)
 
 export default userModel

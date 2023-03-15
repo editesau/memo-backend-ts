@@ -5,7 +5,7 @@ import cookieParser from 'cookie-parser'
 import { createServer } from 'http'
 import morgan from "morgan"
 import { API_VERSION, APP_HOST, APP_PORT, CORS_ORIGIN, MONGO_CA_PATH, MONGO_CLIENT_CRT_PATH, MONGO_HOST, MONGO_PORT, MORGAN_ENV } from "./helpers/constants"
-import mongoose, { MongooseError } from "mongoose"
+import mongoose from "mongoose"
 import { genConnectionOptions, genConnectionString } from "./helpers/tools"
 import userRouter from './api/user/user.router'
 import { errorHandler } from "./api/middlewares/errorMiddleware"
