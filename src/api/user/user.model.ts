@@ -15,16 +15,27 @@ export const User = z.object({
 
 export const UserLoginRequestBody = z.object({
   email: z.string().email(),
-  password: z.string().min(6)
+  password: z.string().min(6),
 })
+
+export const UserAvatarRequestBody = z.object({
+  avatarUrl: z.string().url()
+})
+
+export const UserPasswordRequestBody = z.object({
+  currentPassword: z.string().min(6),
+  newPassword: z.string().min(6)
+}).refine(passwords => passwords.currentPassword !== passwords.newPassword, 'Current and new password must be different')
 
 export type User = z.infer<typeof User>
 export type UserLoginRequestBody = z.infer<typeof UserLoginRequestBody>
+export type UserAvatarRequestBody = z.infer<typeof UserAvatarRequestBody>
+export type UserPasswordRequestBody = z.infer<typeof UserPasswordRequestBody>
 export interface UserLoginResponseBody {
   accessToken: string
 }
 export interface UserIdLocals {
-    userId: string
+  userId: string
 }
 export interface UserIdInParams {
   id: string
@@ -41,26 +52,34 @@ export interface UserMethods {
 
 type UserModel = mongoose.Model<User, Empty, UserMethods>
 
-const userSchema = new mongoose.Schema<User, UserModel, UserMethods>({
-  email: {type: String, require: true},
-  password: {type: String, require: true},
-  userName: {type: String, require: true},
-  avatar: {type: String, default: ''},
-  refreshToken: {type: String, default: ''}
-}, {
-  versionKey: false
-})
+const userSchema = new mongoose.Schema<User, UserModel, UserMethods>(
+  {
+    email: { type: String, require: true },
+    password: { type: String, require: true },
+    userName: { type: String, require: true },
+    avatar: { type: String, default: '' },
+    refreshToken: { type: String, default: '' },
+  },
+  {
+    versionKey: false,
+  }
+)
 
-userSchema.pre('save', async function(next) {
+userSchema.pre('save', async function (next) {
   if (this.isModified('password')) {
     this.password = await bcrypt.hash(this.password, BCRYPT_SALT)
     next()
   }
 })
 
-userSchema.methods.comparePasswords = function(candidatePassword: string): boolean {
-  const isValid = bcrypt.compareSync(candidatePassword, this.password) 
+userSchema.methods.comparePasswords = function (
+  candidatePassword: string
+): boolean {
+  const isValid = bcrypt.compareSync(candidatePassword, this.password)
   return isValid
 }
 
-export const userModel = mongoose.model<User, UserModel>('users_test', userSchema)
+export const userModel = mongoose.model<User, UserModel>(
+  'users_test',
+  userSchema
+)

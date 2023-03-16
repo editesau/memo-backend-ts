@@ -1,7 +1,7 @@
-import { ErrorRequestHandler } from "express"
-import createHttpError from "http-errors"
-import { TokenExpiredError } from "jsonwebtoken"
-import { ZodError } from "zod"
+import { ErrorRequestHandler } from 'express'
+import createHttpError from 'http-errors'
+import { TokenExpiredError } from 'jsonwebtoken'
+import { ZodError } from 'zod'
 
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -19,7 +19,7 @@ export const errorHandler: ErrorRequestHandler = (error, _req, res, _next) => {
     switch (error.name) {
       case 'MongoServerError':
         if (error.message.indexOf('duplicate') !== -1) return res.status(409).json({message: 'User already exists'})
-        return res.status(500).json({message: 'Unknown MongoServer error'})
+        return res.status(500).json({message: error.message})
       default:
         return res.status(500).json({message: 'Unknown server error'})
     }

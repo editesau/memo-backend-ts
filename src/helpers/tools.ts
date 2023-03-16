@@ -1,4 +1,4 @@
-import { IMAGES_PATH, MONGO_CA_PATH, MONGO_CLIENT_CRT_PATH } from "./constants"
+import { IMAGES_PATH, MONGO_CA_PATH, MONGO_CLIENT_CRT_PATH } from './constants'
 import * as fs from 'fs'
 
 /** Function to generate mongoDB connection URL

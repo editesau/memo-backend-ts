@@ -1,5 +1,5 @@
-import { Card } from "@game/game.model"
-import { getImagesFiles } from "@helpers/tools"
+import { Card } from '@game/game.model'
+import { getImagesFiles } from '@helpers/tools'
 import { v4 as uuid } from 'uuid'
 
 export const generateCards = (size: number, gameType: string): Card[] => {
