@@ -1,9 +1,9 @@
-import { Empty } from "@helpers/types"
-import { generateCards } from "@services/gameEngine.service"
-import { UserIdLocals } from "@user/user.model"
-import { RequestHandler } from "express"
-import createHttpError from "http-errors"
-import { GameIdBody, gameModel, GameStartRequestBody } from "./game.model"
+import { Empty } from '@helpers/types'
+import { generateCards } from '@services/gameEngine.service'
+import { UserIdLocals } from '@user/user.model'
+import { RequestHandler } from 'express'
+import createHttpError from 'http-errors'
+import { GameIdBody, gameModel, GameStartRequestBody } from './game.model'
 
 
 export const start: RequestHandler<Empty, GameIdBody, GameStartRequestBody, Empty, UserIdLocals> = async (req, res, next) => {

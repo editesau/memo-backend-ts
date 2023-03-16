@@ -26,5 +26,9 @@ module.exports = {
     }],
     '@typescript-eslint/ban-types': 0,
     'import/no-default-export': 1,
+    'quotes': [
+      'error',
+      'single'
+  ]
   }
 }

@@ -1,4 +1,4 @@
-import { Router } from "express"
+import { Router } from 'express'
 import * as userController from './user.controller'
 import * as validationMiddleware from '@middlewares/vaidationMiddleware'
 import * as authMiddleware from '@middlewares/authMiddleware'
