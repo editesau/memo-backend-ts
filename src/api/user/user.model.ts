@@ -27,10 +27,16 @@ export const UserPasswordRequestBody = z.object({
   newPassword: z.string().min(6)
 }).refine(passwords => passwords.currentPassword !== passwords.newPassword, 'Current and new password must be different')
 
+export const UserEmailRequestBody = z.object({
+  currentEmail: z.string().email(),
+  newEmail: z.string().email()
+}).refine(emails => emails.currentEmail !== emails.newEmail, 'Current and new email must be different')
+
 export type User = z.infer<typeof User>
 export type UserLoginRequestBody = z.infer<typeof UserLoginRequestBody>
 export type UserAvatarRequestBody = z.infer<typeof UserAvatarRequestBody>
 export type UserPasswordRequestBody = z.infer<typeof UserPasswordRequestBody>
+export type UserEmailRequestBody = z.infer<typeof UserEmailRequestBody>
 export interface UserLoginResponseBody {
   accessToken: string
 }

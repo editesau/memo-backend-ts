@@ -1,9 +1,10 @@
+import { getTypesDir } from '@helpers/tools'
 import { Empty } from '@helpers/types'
 import { generateCards } from '@services/gameEngine.service'
 import { UserIdLocals } from '@user/user.model'
 import { RequestHandler } from 'express'
 import createHttpError from 'http-errors'
-import { GameIdBody, gameModel, GameStartRequestBody } from './game.model'
+import { GameGetTypesResponseBody, GameIdBody, gameModel, GameStartRequestBody } from './game.model'
 
 
 export const start: RequestHandler<Empty, GameIdBody, GameStartRequestBody, Empty, UserIdLocals> = async (req, res, next) => {
@@ -44,6 +45,15 @@ export const reset: RequestHandler<GameIdBody, Empty, Empty, Empty, UserIdLocals
       return next(error)
     }
   } catch (error) {
+    return next(error)
+  }
+}
+
+export const getTypes: RequestHandler<Empty, GameGetTypesResponseBody> = async (req, res, next) => {
+  try {
+    const types = getTypesDir()
+    return res.json({ types })
+  } catch(error) {
     return next(error)
   }
 }

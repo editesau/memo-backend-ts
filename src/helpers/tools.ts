@@ -27,3 +27,4 @@ export const genConnectionOptions = (caCertPath: string, clientCertPath: string)
 })
 
 export const getImagesFiles = (gameType: string): string[] => fs.readdirSync(IMAGES_PATH + gameType)
+export const getTypesDir = (): string[] => fs.readdirSync(IMAGES_PATH)

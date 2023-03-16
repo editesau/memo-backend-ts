@@ -21,7 +21,7 @@ export const errorHandler: ErrorRequestHandler = (error, _req, res, _next) => {
         if (error.message.indexOf('duplicate') !== -1) return res.status(409).json({message: 'User already exists'})
         return res.status(500).json({message: error.message})
       default:
-        return res.status(500).json({message: 'Unknown server error'})
+        return res.status(500).json({message: error.message})
     }
   }  
 }
