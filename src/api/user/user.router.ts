@@ -10,3 +10,5 @@ userRouter.get('/logout', authMiddleware.checkAccessToken, userController.logout
 userRouter.get('/refresh', authMiddleware.checkRefreshToken, userController.refresh)
 userRouter.get('/', authMiddleware.checkAccessToken, userController.getSelf)
 userRouter.get('/:id', authMiddleware.checkAccessToken, userController.get)
+userRouter.patch('/avatar', authMiddleware.checkAccessToken, validationMiddleware.changeAvatar, userController.setAvatar)
+userRouter.patch('/password', authMiddleware.checkAccessToken, validationMiddleware.changePassword, userController.changePassword)

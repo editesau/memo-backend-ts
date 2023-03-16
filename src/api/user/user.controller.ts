@@ -12,13 +12,10 @@ import {
   UserViewModel,
   UserIdInParams,
   UserAvatarRequestBody,
+  UserPasswordRequestBody,
 } from './user.model'
 
-export const create: RequestHandler<{}, UserViewModel, User> = async (
-  req,
-  res,
-  next
-) => {
+export const create: RequestHandler<{}, UserViewModel, User> = async (req,res,next) => {
   const { email, password, userName, avatar } = req.body
   try {
     const result = await userModel.create({
@@ -36,8 +33,7 @@ export const create: RequestHandler<{}, UserViewModel, User> = async (
   }
 }
 
-export const login: RequestHandler< Empty, UserLoginResponseBody, UserLoginRequestBody
-> = async (req, res, next) => {
+export const login: RequestHandler<Empty, UserLoginResponseBody, UserLoginRequestBody> = async (req, res, next) => {
   const { email, password } = req.body
   try {
     const userToLogin = await userModel.findOne({ email })
@@ -68,8 +64,7 @@ export const login: RequestHandler< Empty, UserLoginResponseBody, UserLoginReque
   }
 }
 
-export const logout: RequestHandler< Empty, Empty, Empty, Empty, UserIdLocals
-> = async (_req, res, next) => {
+export const logout: RequestHandler<Empty, Empty, Empty, Empty, UserIdLocals> = async (_req, res, next) => {
   const userId = res.locals.userId
   try {
     const user = await userModel.findById(userId)
@@ -94,8 +89,7 @@ export const logout: RequestHandler< Empty, Empty, Empty, Empty, UserIdLocals
   }
 }
 
-export const refresh: RequestHandler< Empty, UserLoginResponseBody, Empty, Empty, UserIdLocals
-> = async (_req, res, next) => {
+export const refresh: RequestHandler<Empty, UserLoginResponseBody, Empty, Empty, UserIdLocals> = async (_req, res, next) => {
   const userId = res.locals.userId
   try {
     const user = await userModel.findById(userId)
@@ -122,8 +116,7 @@ export const refresh: RequestHandler< Empty, UserLoginResponseBody, Empty, Empty
   }
 }
 
-export const getSelf: RequestHandler< Empty, UserViewModel, Empty, Empty, UserIdLocals
-> = async (_req, res, next) => {
+export const getSelf: RequestHandler<Empty, UserViewModel, Empty, Empty, UserIdLocals> = async (_req, res, next) => {
   const userId = res.locals.userId
   if (!mongoose.isValidObjectId(userId)) {
     const error = createHttpError(400, 'Invalid user ID')
@@ -140,13 +133,12 @@ export const getSelf: RequestHandler< Empty, UserViewModel, Empty, Empty, UserId
       }
     } catch (_e) {
       const error = createHttpError(500, 'Error when try to find user')
-      next(error)
+      return next(error)
     }
   }
 }
 
-export const get: RequestHandler< UserIdInParams, UserViewModel, Empty, Empty, Empty
-> = async (req, res, next) => {
+export const get: RequestHandler<UserIdInParams, UserViewModel, Empty, Empty, Empty> = async (req, res, next) => {
   const userId = req.params.id
   if (!mongoose.isValidObjectId(userId)) {
     const error = createHttpError(400, 'Invalid user ID')
@@ -163,16 +155,14 @@ export const get: RequestHandler< UserIdInParams, UserViewModel, Empty, Empty, E
       }
     } catch (_e) {
       const error = createHttpError(500, 'Error when try to find user')
-      next(error)
+      return next(error)
     }
   }
 }
 
-export const setAvatar: RequestHandler<Empty, Empty, UserAvatarRequestBody, Empty, UserIdLocals
-> = async (req, res, next) => {
+export const setAvatar: RequestHandler<Empty, Empty, UserAvatarRequestBody, Empty, UserIdLocals> = async (req, res, next) => {
   const userId = res.locals.userId
   const { avatarUrl } = req.body
-
   try {
     const user = await userModel.findById(userId)
     if (!user) {
@@ -181,12 +171,39 @@ export const setAvatar: RequestHandler<Empty, Empty, UserAvatarRequestBody, Empt
     } else {
       user.avatar = avatarUrl
       try {
-        user.save()
+        await user.save()
+        return res.sendStatus(200)
       } catch (error) {
-        next(error)
+        return next(error)
       }
     }
   } catch (error) {
-    next(error)
+    return next(error)
+  }
+}
+
+export const changePassword: RequestHandler<Empty, Empty, UserPasswordRequestBody, Empty, UserIdLocals> = async (req, res, next) => {
+  const userId = res.locals.userId
+  try {
+    const user = await userModel.findById(userId)
+    if (!user) {
+      const error = createHttpError(404, 'User not found')
+      return next(error)
+    } else {
+      if (user.comparePasswords(req.body.currentPassword)) {
+        user.password = req.body.newPassword
+        try {
+          await user.save()
+          return res.sendStatus(200)
+        } catch (error) {
+          return next(error)
+        }
+      } else {
+        const error = createHttpError(400, 'Password incorrect')
+        return next(error)
+      }
+    }      
+  } catch (error) {
+    return next(error)
   }
 }

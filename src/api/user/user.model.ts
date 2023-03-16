@@ -18,8 +18,19 @@ export const UserLoginRequestBody = z.object({
   password: z.string().min(6),
 })
 
-export type User = z.infer<typeof User>;
-export type UserLoginRequestBody = z.infer<typeof UserLoginRequestBody>;
+export const UserAvatarRequestBody = z.object({
+  avatarUrl: z.string().url()
+})
+
+export const UserPasswordRequestBody = z.object({
+  currentPassword: z.string().min(6),
+  newPassword: z.string().min(6)
+}).refine(passwords => passwords.currentPassword !== passwords.newPassword, 'Current and new password must be different')
+
+export type User = z.infer<typeof User>
+export type UserLoginRequestBody = z.infer<typeof UserLoginRequestBody>
+export type UserAvatarRequestBody = z.infer<typeof UserAvatarRequestBody>
+export type UserPasswordRequestBody = z.infer<typeof UserPasswordRequestBody>
 export interface UserLoginResponseBody {
   accessToken: string
 }
@@ -35,18 +46,11 @@ export interface UserViewModel extends Omit<User, 'password' | 'refreshToken'> {
 export interface UserJwtPayload extends JwtPayload {
   userId: string
 }
-export interface UserAvatarRequestBody {
-  avatarUrl: string
-}
-export interface UserPasswordRequestBody {
-  currentPassword: string
-  newPassword: string
-}
 export interface UserMethods {
   comparePasswords(candidatePassword: string): boolean
 }
 
-type UserModel = mongoose.Model<User, Empty, UserMethods>;
+type UserModel = mongoose.Model<User, Empty, UserMethods>
 
 const userSchema = new mongoose.Schema<User, UserModel, UserMethods>(
   {
