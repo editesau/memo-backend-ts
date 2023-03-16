@@ -32,6 +32,9 @@ export interface GameIdBody {
 }
 
 export type GameStartRequestBody = z.infer<typeof GameStartRequestBody>
+export interface GameGetTypesResponseBody {
+  types: string[]
+}
 
 type GameModel = mongoose.Model<Game>
 
