@@ -13,6 +13,7 @@ import {
   UserIdInParams,
   UserAvatarRequestBody,
   UserPasswordRequestBody,
+  UserEmailRequestBody,
 } from './user.model'
 
 export const create: RequestHandler<{}, UserViewModel, User> = async (req,res,next) => {
@@ -203,6 +204,28 @@ export const changePassword: RequestHandler<Empty, Empty, UserPasswordRequestBod
         return next(error)
       }
     }      
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const changeEmail: RequestHandler<Empty, Empty, UserEmailRequestBody, Empty, UserIdLocals> = async (req, res, next) => {
+  const userId = res.locals.userId
+  const { newEmail } = req.body
+  try {
+    const user = await userModel.findById(userId)
+    if (!user) {
+      const error = createHttpError(404, 'User not found')
+      return next(error)
+    } else {
+      user.email = newEmail
+      try {
+        await user.save()
+        return res.sendStatus(200)
+      } catch (error) {
+        return next(error)
+      }
+    }
   } catch (error) {
     return next(error)
   }
