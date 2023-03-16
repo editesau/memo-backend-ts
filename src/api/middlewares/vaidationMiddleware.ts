@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express'
 import { Empty } from '@helpers/types'
-import { User, UserAvatarRequestBody, UserLoginRequestBody, UserLoginResponseBody, UserPasswordRequestBody, UserViewModel } from '@user/user.model'
+import { User, UserAvatarRequestBody, UserEmailRequestBody, UserLoginRequestBody, UserLoginResponseBody, UserPasswordRequestBody, UserViewModel } from '@user/user.model'
 import { GameIdBody, GameStartRequestBody } from '@game/game.model'
 
 export const userCreate: RequestHandler<Empty, UserViewModel, User> = async (req, _res, next) => {
@@ -42,6 +42,15 @@ export const changeAvatar: RequestHandler<Empty, Empty, UserAvatarRequestBody> =
 export const changePassword: RequestHandler<Empty, Empty, UserPasswordRequestBody> = async (req, _res, next) => {
   try {
     const isValid = await UserPasswordRequestBody.parseAsync(req.body)
+    if (isValid) next()
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const changeEmail: RequestHandler<Empty, Empty, UserEmailRequestBody> = async (req, _res, next) => {
+  try {
+    const isValid = await UserEmailRequestBody.parseAsync(req.body)
     if (isValid) next()
   } catch (error) {
     return next(error)
