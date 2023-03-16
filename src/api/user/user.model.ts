@@ -60,9 +60,9 @@ type UserModel = mongoose.Model<User, Empty, UserMethods>
 
 const userSchema = new mongoose.Schema<User, UserModel, UserMethods>(
   {
-    email: { type: String, require: true },
+    email: { type: String, require: true, unique: true },
     password: { type: String, require: true },
-    userName: { type: String, require: true },
+    userName: { type: String, require: true, unique: true },
     avatar: { type: String, default: '' },
     refreshToken: { type: String, default: '' },
   },
