@@ -6,7 +6,7 @@ export const createAccessToken = (payload: UserJwtPayload) => jwt.sign(
   payload,
   JWT_SECRET,
   {
-    expiresIn: +JWT_ACCESS_LIFE,
+    expiresIn: +JWT_ACCESS_LIFE
   },
 )
 
@@ -14,7 +14,7 @@ export const createRefreshToken = (payload: UserJwtPayload) => jwt.sign(
   payload,
   JWT_SECRET,
   {
-    expiresIn: +JWT_REFRESH_LIFE,
+    expiresIn: +JWT_REFRESH_LIFE
   },
 )
 

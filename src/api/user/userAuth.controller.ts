@@ -99,14 +99,14 @@ export const refresh: RequestHandler<Empty, UserLoginResponseBody, Empty, Empty,
     user.refreshToken = refreshToken
     try {
       await user.save()
+      return res
+      .status(200)
+      .cookie('refresh_token', refreshToken, { httpOnly: true })
+      .json({ accessToken })
     } catch (_e) {
       const error = createHttpError(500, 'Error when try to save user data')
       return next(error)
     }
-    return res
-      .status(200)
-      .cookie('refresh_token', refreshToken, { httpOnly: true })
-      .json({ accessToken })
   } catch (_e) {
     const error = createHttpError(500, 'Error when try to get user info')
     return next(error)

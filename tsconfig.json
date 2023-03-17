@@ -6,6 +6,7 @@
     "moduleResolution": "node",
     "baseUrl": "./",
     "paths": {
+      "@src/*": ["./src/*"],
       "@middlewares/*": [
         "./src/api/middlewares/*"
       ],
@@ -42,7 +43,6 @@
   },
   "include": [
     "./src/**/*.ts",
-    "./__tests__/**/*.ts",
     "./jest.config.ts"
   ]
 }
