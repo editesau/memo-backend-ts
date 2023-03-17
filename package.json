@@ -6,7 +6,7 @@
   "scripts": {
     "build": "rm -rf ./dist && npx tsc && npx tsc-alias",
     "dev": "rm -rf ./dist && npx tsc && npx tsc-alias && node ./dist/src/index.js",
-    "test": "jest -i"
+    "test": "jest -i --verbose"
   },
   "author": "Aleksei Morozov @editesau",
   "license": "ISC",

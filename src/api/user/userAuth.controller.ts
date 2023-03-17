@@ -50,7 +50,7 @@ export const login: RequestHandler<Empty, UserLoginResponseBody, UserLoginReques
           .cookie('refresh_token', refreshToken, { httpOnly: true })
           .json({ accessToken })
       }
-      const error = createHttpError(400, 'Password incorrect')
+      const error = createHttpError(401, 'Password incorrect')
       return next(error)
     } else {
       const error = createHttpError(404, `User with email ${email} not found`)

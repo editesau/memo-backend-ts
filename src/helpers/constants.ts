@@ -2,7 +2,7 @@ import * as dotenv from 'dotenv'
 
 dotenv.config()
 
-const NODE_ENV = 'dev'
+export const NODE_ENV = process.env.NODE_ENV || 'dev'
 
 export const API_VERSION = process.env.API_VERSION || 1
 export const APP_PORT = Number(process.env.APP_PORT) || 5051 
