@@ -18,6 +18,7 @@ describe('User', () => {
     userName: 'test'
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { userName: _, ...loginUser } = newUser
 
 

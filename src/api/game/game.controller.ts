@@ -4,6 +4,7 @@ import { generateCards } from '@services/gameEngine.service'
 import { UserIdLocals } from '@user/user.model'
 import { RequestHandler } from 'express'
 import createHttpError from 'http-errors'
+import mongoose from 'mongoose'
 import { GameGetTypesResponseBody, GameIdBody, gameModel, GameStartRequestBody } from './game.model'
 
 
@@ -28,28 +29,33 @@ export const start: RequestHandler<Empty, GameIdBody, GameStartRequestBody, Empt
 export const reset: RequestHandler<GameIdBody, Empty, Empty, Empty, UserIdLocals> = async (req, res, next) => {
   const userId = res.locals.userId
   const { gameId } = req.params
-  try {
-    const currentGame = await gameModel.findOne({userId, gameId})
-    if (currentGame) {
-      const { type, level} = currentGame.toJSON()
-      const newCards = generateCards(level, type)
-      currentGame.cards = newCards
-      try {
-        await currentGame.save()
-        return res.sendStatus(200)
-      } catch (error) {
+  if (!mongoose.isValidObjectId(gameId)) {
+    const error = createHttpError(400, 'Invalid game ID')
+    return next(error)
+  } else {
+    try {
+      const currentGame = await gameModel.findOne({userId, _id: gameId})
+      if (currentGame) {
+        const { type, level} = currentGame.toJSON()
+        const newCards = generateCards(level, type)
+        currentGame.cards = newCards
+        try {
+          await currentGame.save()
+          return res.sendStatus(200)
+        } catch (error) {
+          return next(error)
+        }
+      } else {
+        const error = createHttpError(500, 'Error when try to reset game')
         return next(error)
       }
-    } else {
-      const error = createHttpError(500, 'Error when try to reset game')
+    } catch (error) {
       return next(error)
     }
-  } catch (error) {
-    return next(error)
   }
 }
 
-export const getTypes: RequestHandler<Empty, GameGetTypesResponseBody> = async (req, res, next) => {
+export const getTypes: RequestHandler<Empty, GameGetTypesResponseBody> = async (_req, res, next) => {
   try {
     const types = getTypesDir()
     return res.json({ types })

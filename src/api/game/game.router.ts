@@ -6,5 +6,5 @@ export const gameRouter = Router()
 
 gameRouter.use(authMiddleware.checkAccessToken)
 gameRouter.post('/start', validationMiddleware.gameStart, gameController.start)
-gameRouter.post('/:id/reset', gameController.reset)
+gameRouter.post('/:gameId/reset', gameController.reset)
 gameRouter.get('/types', gameController.getTypes)
