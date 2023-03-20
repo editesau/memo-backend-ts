@@ -3,12 +3,14 @@ import { app } from '@src/app'
 import { MongoMemoryServer } from 'mongodb-memory-server'
 import mongoose from 'mongoose'
 import { User, userModel } from '@user/user.model'
-import { checkToken, createAccessToken } from '@src/services/jwt.service'
+import { checkToken, createAccessToken, createRefreshToken } from '@src/services/jwt.service'
 
 describe('User', () => {
 
   let mongoServer: MongoMemoryServer
   let userId: string
+  // let accessToken: string
+  let refreshToken: string
 
   const newUser: User = { 
     email: 'user@test.com',
@@ -31,6 +33,11 @@ describe('User', () => {
     await mongoose.connect(mongoServer.getUri())
     const result = await userModel.create(existingUser)
     userId = result.toJSON()._id.toString()
+    
+    refreshToken = createRefreshToken({userId})
+    result.refreshToken = refreshToken
+    await result.save()
+    // accessToken = createAccessToken({userId})
   })
   
   describe('Auth routes', () => {
@@ -105,6 +112,16 @@ describe('User', () => {
       test('get / Without authorization -> 401 Unathorized', async () => {
         const res:request.Response = await request(app).get('/api/v1/user/')
         expect(res.statusCode).toBe(401)
+      })
+      test('get /refresh without refresh token -> 401 Unauthorized', async () => {
+        const res:request.Response = await request(app).get('/api/v1/user/refresh')
+        expect(res.statusCode).toBe(401)
+      })
+      test('get /refresh with valid data -> 200 with new tokens', async () => {
+        const res:request.Response = await request(app).get('/api/v1/user/refresh').set('Cookie', `refresh_token=${refreshToken};`)
+        expect(res.statusCode).toBe(200)
+        expect(res.body).toHaveProperty('accessToken')
+        expect(res.header['set-cookie'][0]).toContain('refresh_token')
       })
     })
   })

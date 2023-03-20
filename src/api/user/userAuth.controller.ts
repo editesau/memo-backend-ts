@@ -9,6 +9,7 @@ import {
   UserLoginResponseBody,
   UserIdLocals,
   UserViewModel,
+  UserRefreshToken,
 } from './user.model'
 
 
@@ -86,10 +87,10 @@ export const logout: RequestHandler<Empty, Empty, Empty, Empty, UserIdLocals> = 
   }
 }
 
-export const refresh: RequestHandler<Empty, UserLoginResponseBody, Empty, Empty, UserIdLocals> = async (_req, res, next) => {
+export const refresh: RequestHandler<Empty, UserLoginResponseBody, Empty, Empty, UserRefreshToken> = async (_req, res, next) => {
   const userId = res.locals.userId
   try {
-    const user = await userModel.findById(userId)
+    const user = await userModel.findOne({_id: userId, refreshToken: res.locals.refreshToken})
     if (!user) {
       const error = createHttpError(404, 'User not found')
       return next(error)

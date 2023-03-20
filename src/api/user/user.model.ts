@@ -43,6 +43,10 @@ export interface UserLoginResponseBody {
 export interface UserIdLocals {
   userId: string
 }
+
+export interface UserRefreshToken extends UserIdLocals {
+  refreshToken: string
+}
 export interface UserIdInParams {
   id: string
 }
