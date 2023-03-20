@@ -43,6 +43,10 @@ export interface UserLoginResponseBody {
 export interface UserIdLocals {
   userId: string
 }
+
+export interface UserRefreshToken extends UserIdLocals {
+  refreshToken: string
+}
 export interface UserIdInParams {
   id: string
 }
@@ -60,9 +64,9 @@ type UserModel = mongoose.Model<User, Empty, UserMethods>
 
 const userSchema = new mongoose.Schema<User, UserModel, UserMethods>(
   {
-    email: { type: String, require: true },
+    email: { type: String, require: true, unique: true },
     password: { type: String, require: true },
-    userName: { type: String, require: true },
+    userName: { type: String, require: true, unique: true },
     avatar: { type: String, default: '' },
     refreshToken: { type: String, default: '' },
   },

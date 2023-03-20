@@ -9,6 +9,7 @@ import {
   UserLoginResponseBody,
   UserIdLocals,
   UserViewModel,
+  UserRefreshToken,
 } from './user.model'
 
 
@@ -50,7 +51,7 @@ export const login: RequestHandler<Empty, UserLoginResponseBody, UserLoginReques
           .cookie('refresh_token', refreshToken, { httpOnly: true })
           .json({ accessToken })
       }
-      const error = createHttpError(400, 'Password incorrect')
+      const error = createHttpError(401, 'Password incorrect')
       return next(error)
     } else {
       const error = createHttpError(404, `User with email ${email} not found`)
@@ -86,10 +87,10 @@ export const logout: RequestHandler<Empty, Empty, Empty, Empty, UserIdLocals> = 
   }
 }
 
-export const refresh: RequestHandler<Empty, UserLoginResponseBody, Empty, Empty, UserIdLocals> = async (_req, res, next) => {
+export const refresh: RequestHandler<Empty, UserLoginResponseBody, Empty, Empty, UserRefreshToken> = async (_req, res, next) => {
   const userId = res.locals.userId
   try {
-    const user = await userModel.findById(userId)
+    const user = await userModel.findOne({_id: userId, refreshToken: res.locals.refreshToken})
     if (!user) {
       const error = createHttpError(404, 'User not found')
       return next(error)
@@ -99,14 +100,14 @@ export const refresh: RequestHandler<Empty, UserLoginResponseBody, Empty, Empty,
     user.refreshToken = refreshToken
     try {
       await user.save()
+      return res
+      .status(200)
+      .cookie('refresh_token', refreshToken, { httpOnly: true })
+      .json({ accessToken })
     } catch (_e) {
       const error = createHttpError(500, 'Error when try to save user data')
       return next(error)
     }
-    return res
-      .status(200)
-      .cookie('refresh_token', refreshToken, { httpOnly: true })
-      .json({ accessToken })
   } catch (_e) {
     const error = createHttpError(500, 'Error when try to get user info')
     return next(error)
