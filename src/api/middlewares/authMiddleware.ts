@@ -3,6 +3,8 @@ import createHttpError from 'http-errors'
 import { Empty } from '@helpers/types'
 import { checkToken } from '@services/jwt.service'
 import { UserIdLocals, UserRefreshToken } from '@user/user.model'
+import { Socket } from 'socket.io'
+import { SocketNextFunction } from '@src/services/socket/socket.model'
 
 export const checkAccessToken: RequestHandler<
   Empty,
@@ -51,4 +53,20 @@ export const checkRefreshToken: RequestHandler<
     next(error)
   }
   return next()
+}
+
+export const socketAuthMiddleware = (socket: Socket, next: SocketNextFunction) => {
+  if (socket.handshake.auth && socket.handshake.auth.token) {
+    const { token } = socket.handshake.auth
+    try {
+      const { userId } = checkToken(token)
+      // eslint-disable-next-line no-param-reassign
+      socket.data.userId = userId
+      return next()
+    } catch (e) {
+      return next(new Error('Unauthorized'))
+    }
+  } else {
+    return next(new Error('Unauthorized'))
+  }
 }
