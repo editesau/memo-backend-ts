@@ -3,7 +3,7 @@ import { z } from 'zod'
 
 const Card = z.object({
   id: z.string().uuid(),
-  picture: z.string(),
+  picture: z.string().optional(),
   isOpen: z.boolean(),
   isMatched: z.boolean()
 }) 

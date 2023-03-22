@@ -1,10 +1,12 @@
-import { createServer } from 'http'
+import http from 'http'
 import { app } from './app'
 import { APP_HOST, APP_PORT, MONGO_CA_PATH, MONGO_CLIENT_CRT_PATH, MONGO_HOST, MONGO_PORT } from './helpers/constants'
 import mongoose from 'mongoose'
 import { genConnectionOptions, genConnectionString } from '@helpers/tools'
+import { initializeSocketServer } from './services/socket/socket.service'
 
-const httpServer = createServer(app)
+const httpServer = http.createServer(app)
+initializeSocketServer(httpServer)
 
 const startServices = async (): Promise<void> => {
   

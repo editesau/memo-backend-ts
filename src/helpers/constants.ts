@@ -20,4 +20,6 @@ export const JWT_SECRET = process.env.JWT_SECRET || ''
 export const JWT_ACCESS_LIFE =  Number(process.env.JWT_ACCESS_LIFE) || 300
 export const JWT_REFRESH_LIFE = Number(process.env.JWT_REFRESH_LIFE) || 86400
 
+export const SOCKET_PATH = process.env.SOCKET_PATH || 'socket.io'
+
 export const IMAGES_PATH = `${process.cwd()}/resources/cards/`

@@ -1,11 +1,12 @@
 import { Card } from '@src/api/game/game.model'
+import { ExtendedError } from 'socket.io/dist/namespace'
 
-interface OpenCardData {
+export interface OpenCardData {
   gameId: string
-  carId: string
+  cardId: string
 }
 
-interface GameData {
+export interface GameData {
   cards: Card[]
   gameType: string
   state: string
@@ -21,12 +22,16 @@ export interface OutSocketEvents {
   LOCK_BOARD: () => void
   UNLOCK_BOARD: () => void
   GAME_FINISHED: () => void
-  CARD_OPENED: (card: Card) => void
+  CARD_OPENED: (cards: Card) => void
   MATCHED: (cardIds: [string, string]) => void
   MISMATCH: (cardIds: [string, string]) => void
   ERROR: (data: {message: string}) => void
 }
 
-export interface SocketData {
+export interface SocketDataType {
   userId: string
 }
+
+export interface SocketNextFunction {
+  (err?: ExtendedError | undefined): void 
+} 

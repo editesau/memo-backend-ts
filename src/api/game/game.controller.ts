@@ -39,6 +39,7 @@ export const reset: RequestHandler<GameIdBody, Empty, Empty, Empty, UserIdLocals
         const { type, level} = currentGame.toJSON()
         const newCards = generateCards(level, type)
         currentGame.cards = newCards
+        currentGame.state = 'In progress'
         try {
           await currentGame.save()
           return res.sendStatus(200)
