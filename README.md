@@ -6,6 +6,7 @@
 Backend for SPA in Memo-games style
 ## Features
 On v0.3.0 we have next features available:
+- JWT pairs for authorization users
 - API for User actions Signin/SignUp/Logout/Change user info
 - API for Game actions Start/Reset
 - Main game loop working with Socket.io connection, all logic controlled by backend
@@ -14,7 +15,7 @@ On v0.3.0 we have next features available:
 
 ## Tech Stack
 
-Typescript, Node.js, Express, Socket.io, Zod, MongoDB, Jest
+Typescript, Node.js, Express, JWT, Socket.io, Zod, MongoDB, Jest
 
 ## Environment Variables
 
@@ -49,7 +50,7 @@ To run this project, you will need to add the following environment variables to
 
 ## API Reference
 
-Api reference described [here](https://app.swaggerhub.com/apis-docs/ALEXEYPO121/sb-memo/1.0.0)
+Api reference described [here](https://app.swaggerhub.com/apis-docs/ALEXEYPO121/sb-memo/0.3.0)
 
 
 ## Deployment
