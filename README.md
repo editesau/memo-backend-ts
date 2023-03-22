@@ -1,5 +1,5 @@
 
-# Memorika backend TS
+# Memorika backend TS v0.3
 
 ![Logo](https://user-images.githubusercontent.com/111222143/221550000-5a881d2e-4389-4077-b688-38867df88667.png)
 
