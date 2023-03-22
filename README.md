@@ -49,7 +49,7 @@ To run this project, you will need to add the following environment variables to
 
 ## API Reference
 
-Api reference described [here](https://app.swaggerhub.com/apis-docs/ALEXEYPO121/sb-memo/1.0.0)
+Api reference described [here](https://app.swaggerhub.com/apis-docs/ALEXEYPO121/sb-memo/0.3.0)
 
 
 ## Deployment
