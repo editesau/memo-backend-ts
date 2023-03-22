@@ -16,7 +16,7 @@ export const MONGO_CA_PATH = process.env.MONGO_CA_PATH || './mongoCrt/CA.crt'
 export const MONGO_CLIENT_CRT_PATH = process.env.MONGO_CLIENT_CRT_PATH || './mongoCrt/client.crt'
 
 export const BCRYPT_SALT = Number(process.env.BCRYPT_SALT) || 10
-export const JWT_SECRET = process.env.JWT_SECRET || ''
+export const JWT_SECRET = process.env.JWT_SECRET || 'verySecretJWTKeyForSign'
 export const JWT_ACCESS_LIFE =  Number(process.env.JWT_ACCESS_LIFE) || 300
 export const JWT_REFRESH_LIFE = Number(process.env.JWT_REFRESH_LIFE) || 86400
 
