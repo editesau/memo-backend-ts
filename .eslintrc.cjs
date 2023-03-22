@@ -3,7 +3,9 @@ module.exports = {
     es2021: true,
     node: true
   },
-  extends: 'standard-with-typescript',
+  extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
+  parser: '@typescript-eslint/parser',
+  plugins: ['@typescript-eslint', 'import'],
   overrides: [
   ],
   parserOptions: {
@@ -21,6 +23,12 @@ module.exports = {
         delimiter: 'semi',
         requireLast: false
       }
-    }]
+    }],
+    '@typescript-eslint/ban-types': 0,
+    'import/no-default-export': 1,
+    'quotes': [
+      'error',
+      'single'
+  ]
   }
 }
