@@ -123,4 +123,3 @@ export async function mainGameLoopHandler(this: Socket<IncomingSocketEvents, Out
     return this.emit('UNLOCK_BOARD')
   }
 }
-
